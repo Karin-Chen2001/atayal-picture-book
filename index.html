@@ -8,7 +8,7 @@
   :root{--warm:#ffb347;--deep:#3b1a0a;--cream:#fff3dc}
   *{box-sizing:border-box;-webkit-tap-highlight-color:transparent;user-select:none}
   html,body{margin:0;height:100%;overflow:hidden;background:radial-gradient(circle at 50% 30%,#7a3a14,#2a1006 75%);font-family:"Noto Sans TC","Microsoft JhengHei",sans-serif;color:var(--cream)}
-  #stage{position:fixed;inset:0;display:flex;align-items:center;justify-content:center;padding:56px 170px 78px}
+  #stage{position:fixed;inset:0;display:flex;align-items:center;justify-content:center;padding:56px 70px 78px}
   #frame{position:relative;aspect-ratio:4/3;width:min(100%,calc((100vh - 134px)*4/3));border-radius:18px;border:6px solid var(--warm);box-shadow:0 12px 40px #000a,0 0 0 3px #7a3a14;overflow:hidden;background:#000}
   #pic{display:block;width:100%;height:100%;object-fit:cover;cursor:pointer}
   #sub{position:absolute;left:0;right:0;bottom:0;padding:34px 16px 12px;text-align:center;background:linear-gradient(transparent,#000d 55%);pointer-events:none}
@@ -35,13 +35,305 @@
   .btn{position:fixed;border:0;background:none;padding:0;cursor:pointer;transition:transform .15s}
   .btn:active{transform:scale(.88)}
   .btn img{display:block;mix-blend-mode:screen}
-  #prev{left:10px;top:50%}#next{right:10px;top:50%}
-  #prev,#next{display:flex;flex-direction:row;align-items:center;gap:8px;margin-top:-30px}
-  #next{flex-direction:row-reverse}  /* 下一頁：文字在左、箭頭在右 */
+  #prev{left:10px;top:50%;margin-top:-30px}#next{right:10px;top:50%;margin-top:-30px}
   #prev img,#next img{width:56px;height:auto;filter:drop-shadow(0 0 8px var(--warm))}
-  .lbl{font-size:20px;font-weight:800;color:var(--deep);background:var(--warm);padding:6px 14px;border-radius:999px;box-shadow:0 3px 0 #b86a0c;white-space:nowrap}
+  #prev,#next{display:flex;flex-direction:column;align-items:center;gap:6px;margin-top:-44px;z-index:6}
+  #prev span,#next span{font-size:17px;font-weight:800;color:var(--warm);text-shadow:0 2px 6px #000;white-space:nowrap}
   .nudge{animation:nudge 1.2s ease-in-out infinite}
   @keyframes nudge{50%{transform:translateX(6px)}}
   #prev.nudge{animation-name:nudgeL}@keyframes nudgeL{50%{transform:translateX(-6px)}}
   #read{left:50%;bottom:8px;transform:translateX(-50%)}
   #read img{height:66px;width:auto;border-radius:14px}
+  #read:active{transform:translateX(-50%) scale(.9)}
+  #mute{right:14px;top:10px;font-size:28px;color:var(--cream)}
+  #full{right:62px;top:12px;font-size:26px;color:var(--cream);z-index:6}
+  #auto{right:104px;top:11px;font-size:15px;font-weight:800;color:var(--cream);background:#0007;border:2px solid #fff4;border-radius:999px;padding:5px 12px;z-index:6}
+  #auto.on{background:var(--warm);color:var(--deep);border-color:var(--warm);box-shadow:0 0 14px var(--warm)}
+  #dots{z-index:6}
+  #dots i{cursor:pointer;position:relative}
+  #dots i::before{content:"";position:absolute;inset:-9px -3px}
+  #toast{position:fixed;left:50%;top:60px;transform:translateX(-50%);background:#000b;color:#fff;padding:8px 18px;border-radius:999px;font-size:16px;z-index:50;opacity:0;transition:opacity .3s;pointer-events:none}
+  #toast.on{opacity:1}
+  #resume{font-size:20px;font-weight:700;padding:10px 28px;border-radius:999px;border:2px solid var(--warm);background:#0006;color:var(--cream);cursor:pointer}
+  #dots{position:fixed;top:14px;left:50%;transform:translateX(-50%);display:flex;gap:6px}
+  #dots i{width:10px;height:10px;border-radius:50%;background:#fff3;transition:.3s}
+  #dots i.on{background:var(--warm);transform:scale(1.5);box-shadow:0 0 8px var(--warm)}
+  #dots i.done{background:#ffb34799}
+  #stars{position:fixed;left:14px;top:8px;font-size:22px;font-weight:700;color:var(--warm)}
+  #spirit{position:fixed;right:14px;bottom:14px;width:84px;cursor:pointer;mix-blend-mode:multiply;animation:float 3s ease-in-out infinite;z-index:5}
+  #spirit.hop{animation:hop .6s}
+  @keyframes float{50%{transform:translateY(-10px) rotate(4deg)}}
+  @keyframes hop{30%{transform:translateY(-60px) rotate(-15deg) scale(1.2)}60%{transform:translateY(0) rotate(10deg)}}
+  .spark{position:fixed;pointer-events:none;font-size:26px;z-index:20;animation:spark 1s ease-out forwards}
+  @keyframes spark{to{transform:translate(var(--dx),var(--dy)) rotate(var(--r)) scale(.3);opacity:0}}
+  #cover{position:fixed;inset:0;z-index:30;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:18px;background:radial-gradient(circle at 50% 30%,#8a4418,#2a1006 80%);text-align:center;padding:20px}
+  #cover img{max-height:55vh;max-width:90vw;border-radius:18px;border:6px solid var(--warm);box-shadow:0 12px 40px #000a;animation:float 3s ease-in-out infinite}
+  #go{font-size:30px;font-weight:800;padding:14px 44px;border-radius:999px;border:0;background:var(--warm);color:var(--deep);cursor:pointer;box-shadow:0 6px 0 #b86a0c;animation:pulse 1.4s infinite}
+  #go:active{transform:translateY(4px);box-shadow:0 2px 0 #b86a0c}
+  @keyframes pulse{50%{transform:scale(1.07)}}
+  #err{position:fixed;left:50%;top:50%;transform:translate(-50%,-50%);background:#000c;padding:20px 26px;border-radius:14px;text-align:center;z-index:40;display:none;max-width:80vw;line-height:1.7;pointer-events:none}
+  @media (max-width:600px){
+    #stage{padding:86px 8px 170px}
+    #frame{width:min(100%,calc((100vh - 256px)*4/3))}
+    #dots{top:56px}
+    #prev,#next{top:auto;bottom:84px;margin:0}
+    #prev{left:14px}#next{right:14px}
+    #prev img,#next img{width:48px}
+    #prev span,#next span{font-size:15px}
+    #spirit{width:60px;bottom:14px}
+  }
+</style>
+</head>
+<body>
+
+<div id="cover">
+  <img id="coverimg" src="graphics/0.jpg" alt="封面">
+  <button id="go">▶ 開始閱讀</button>
+  <div style="opacity:.8;font-size:15px;line-height:1.7">點畫面右邊：翻到下一頁　點畫面左邊：回上一頁<br>也可以用手指左右滑動，還可以點小精靈喔！</div>
+</div>
+
+<div id="stars">⭐ 0</div>
+<div id="dots"></div>
+<button class="btn" id="mute" title="背景音樂（M）">🎵</button>
+<button class="btn" id="full" title="全螢幕（F）">⛶</button>
+<button class="btn" id="auto" title="自動朗讀並翻頁（A）">▶ 自動翻頁</button>
+<div id="toast"></div>
+
+<div id="stage"><div id="frame"><img id="pic" alt="繪本"><div id="sub" class="empty"><div id="ay"></div><div id="zh"></div></div></div></div>
+<div id="pageno"></div>
+
+<button class="btn" id="prev"><img src="graphics/left.jpg" alt="上一頁"><span>上一頁</span></button>
+<button class="btn nudge" id="next"><img src="graphics/right.jpg" alt="下一頁"><span>下一頁</span></button>
+<button class="btn" id="read"><img src="graphics/read.jpg" alt="朗讀"></button>
+<img id="spirit" src="graphics/spirit.png" alt="小精靈">
+
+<div id="err">找不到檔案 😢<br>請把這個 index.html 放在<br>同時有 <b>graphics、speech、music</b> 三個資料夾的那一層，<br>再用瀏覽器打開。</div>
+
+<script src="subtitles.js"></script>
+<script>
+const LAST = 19;
+const SUBS = (typeof SUBTITLES !== 'undefined' && SUBTITLES) || [];
+let page = 0, stars = 0, bgmOn = true, started = false, seen = new Set();
+const $ = id => document.getElementById(id);
+const pic = $('pic'), speech = new Audio(), bgm = new Audio();
+bgm.loop = true; bgm.volume = 0.22;
+speech.volume = 1;
+
+// dots
+for (let i = 0; i <= LAST; i++) {
+  const d = document.createElement('i');
+  d.title = i === 0 ? '封面' : `第 ${i} 頁`;
+  d.onclick = () => { if (started && !turning && i !== page) { swish(); show(i, i > page ? 'r' : 'l'); } };
+  $('dots').appendChild(d);
+}
+
+// tiny sound effects (no files needed)
+let ac;
+function blip(freq, dur = .12, type = 'sine') {
+  try {
+    ac = ac || new (window.AudioContext || window.webkitAudioContext)();
+    const o = ac.createOscillator(), g = ac.createGain();
+    o.type = type; o.frequency.value = freq; o.connect(g); g.connect(ac.destination);
+    g.gain.setValueAtTime(.18, ac.currentTime);
+    g.gain.exponentialRampToValueAtTime(.001, ac.currentTime + dur);
+    o.start(); o.stop(ac.currentTime + dur);
+  } catch (e) {}
+}
+function pop() { blip(660); setTimeout(() => blip(990, .15), 70); }
+
+function burst(x, y, n = 10, set = ['⭐','✨','🌟','🎵','🌽','🐗']) {
+  for (let i = 0; i < n; i++) {
+    const s = document.createElement('div');
+    s.className = 'spark'; s.textContent = set[Math.random() * set.length | 0];
+    s.style.left = x + 'px'; s.style.top = y + 'px';
+    const a = Math.random() * Math.PI * 2, d = 60 + Math.random() * 120;
+    s.style.setProperty('--dx', Math.cos(a) * d + 'px');
+    s.style.setProperty('--dy', Math.sin(a) * d - 40 + 'px');
+    s.style.setProperty('--r', (Math.random() * 360 - 180) + 'deg');
+    document.body.appendChild(s); setTimeout(() => s.remove(), 1000);
+  }
+}
+function addStar(n = 1) { stars += n; $('stars').textContent = '⭐ ' + stars; }
+
+// 翻頁動畫：下一頁 = 舊頁翻開；上一頁 = 前一頁翻回來蓋上
+let turning = false;
+function swish() {
+  try {
+    ac = ac || new (window.AudioContext || window.webkitAudioContext)();
+    const len = ac.sampleRate * .35, buf = ac.createBuffer(1, len, ac.sampleRate), d = buf.getChannelData(0);
+    for (let i = 0; i < len; i++) d[i] = (Math.random() * 2 - 1) * Math.sin(Math.PI * i / len);
+    const src = ac.createBufferSource(), f = ac.createBiquadFilter(), g = ac.createGain();
+    src.buffer = buf; f.type = 'bandpass'; f.frequency.value = 1800; g.gain.value = .12;
+    src.connect(f); f.connect(g); g.connect(ac.destination); src.start();
+  } catch (e) {}
+}
+function turn(oldSrc, newSrc, dir) {
+  if (!oldSrc || oldSrc === newSrc) { pic.src = newSrc; return; }
+  const f = document.createElement('div'), im = document.createElement('img');
+  f.className = 'flip ' + (dir === 'r' ? 'fnext' : 'fprev');
+  im.src = dir === 'r' ? oldSrc : newSrc; f.appendChild(im);
+  $('frame').appendChild(f);
+  if (dir === 'r') pic.src = newSrc;
+  turning = true;
+  let done = false;
+  const end = () => { if (done) return; done = true; if (dir !== 'r') pic.src = newSrc; f.remove(); turning = false; };
+  f.addEventListener('animationend', e => { if (e.target === f) end(); });
+  setTimeout(end, 900);
+}
+
+function show(n, dir = 'r') {
+  page = Math.max(0, Math.min(LAST, n));
+  clearTimeout(autoTimer);
+  if (started) { try { localStorage.setItem('atayalPage', page); } catch (e) {} }
+  preload(page + 1);
+  pic.classList.remove('talk');
+  turn(pic.getAttribute('src'), `graphics/${page}.jpg`, dir);
+  [...$('dots').children].forEach((d, i) => {
+    d.className = i === page ? 'on' : (seen.has(i) ? 'done' : '');
+  });
+  seen.add(page);
+  $('pageno').textContent = page === 0 ? '封面' : `第 ${page} 頁 / ${LAST}`;
+  const s = SUBS[page] || {};
+  $('ay').textContent = s.ay || ''; $('zh').textContent = s.zh || '';
+  $('sub').classList.toggle('empty', !(s.ay || s.zh));
+  $('prev').style.visibility = page === 0 ? 'hidden' : 'visible';
+  $('next').style.visibility = page === LAST ? 'hidden' : 'visible';
+  if (started) { playMusic(); setTimeout(narrate, 350); }
+  if (page === LAST) setTimeout(celebrate, 900);
+}
+
+function playMusic() {
+  bgm.src = `music/music${page}.mp3`;
+  if (bgmOn) bgm.play().catch(() => {});
+}
+function narrate() {
+  speech.pause();
+  speech.src = `speech/speech${page}.mp3`;
+  bgm.volume = 0.08;                       // 朗讀時把音樂調小
+  pic.classList.add('talk');
+  speech.play().catch(() => { pic.classList.remove('talk'); autoAdvance(4000); });
+}
+speech.onpause = () => { pic.classList.remove('talk'); bgm.volume = 0.22; };
+speech.onended = () => { pic.classList.remove('talk'); bgm.volume = 0.22; autoAdvance(1300); };
+speech.onerror = bgm.onerror = () => { $('err').style.display = 'block'; };
+pic.onerror = () => { $('err').style.display = 'block'; };
+pic.onload = () => { $('err').style.display = 'none'; };
+
+function go(d) {
+  const n = page + d; if (n < 0 || n > LAST || turning) return;
+  swish(); if (!seen.has(n)) addStar();
+  show(n, d > 0 ? 'r' : 'l');
+}
+function celebrate() {
+  for (let k = 0; k < 6; k++) setTimeout(() => burst(innerWidth * Math.random(), innerHeight * .4, 8), k * 250);
+  addStar(5); blip(784, .2); setTimeout(() => blip(1046, .3), 150);
+}
+
+$('go').onclick = () => {
+  started = true; $('cover').style.display = 'none';
+  pop(); show(1 > 0 ? 0 : 0); // 從封面頁開始：0 號圖與 0 號朗讀
+};
+$('prev').onclick = () => go(-1);
+$('next').onclick = () => { $('next').classList.remove('nudge'); go(1); };
+$('read').onclick = () => { pop(); narrate(); };
+$('mute').onclick = () => {
+  bgmOn = !bgmOn; $('mute').textContent = bgmOn ? '🎵' : '🔇';
+  bgmOn ? bgm.play().catch(() => {}) : bgm.pause();
+};
+// 點螢幕翻頁：點左邊 30% 回上一頁，其他地方翻下一頁
+$('stage').onclick = e => {
+  if (!started || turning) return;
+  burst(e.clientX, e.clientY, 5);
+  go(e.clientX < innerWidth * 0.3 ? -1 : 1);
+};
+$('spirit').onclick = e => {
+  const s = $('spirit'); s.classList.remove('hop'); void s.offsetWidth; s.classList.add('hop');
+  blip(880, .1, 'square'); setTimeout(() => blip(1175, .15, 'square'), 90);
+  const r = s.getBoundingClientRect(); burst(r.left + r.width / 2, r.top, 12); addStar(2);
+};
+
+// keyboard + swipe
+addEventListener('keydown', e => {
+  if (!started) return;
+  if (e.key === 'ArrowRight') go(1);
+  if (e.key === 'ArrowLeft') go(-1);
+  if (e.key === ' ') { e.preventDefault(); narrate(); }
+});
+let sx = null;
+addEventListener('touchstart', e => sx = e.touches[0].clientX, { passive: true });
+addEventListener('touchend', e => {
+  if (sx === null || !started) return;
+  const dx = e.changedTouches[0].clientX - sx;
+  if (Math.abs(dx) > 60) go(dx < 0 ? 1 : -1);
+  sx = null;
+});
+
+// ───────── 方便功能 ─────────
+let auto = false, autoTimer, preloaded = [];
+try { auto = localStorage.getItem('atayalAuto') === '1'; } catch (e) {}
+
+function toast(msg) {
+  const t = $('toast'); t.textContent = msg; t.classList.add('on');
+  clearTimeout(toast.t); toast.t = setTimeout(() => t.classList.remove('on'), 1600);
+}
+// 自動翻頁：朗讀完等一下就翻到下一頁，最後一頁自動停止
+function autoAdvance(ms) {
+  clearTimeout(autoTimer);
+  if (auto && started && page < LAST) autoTimer = setTimeout(() => go(1), ms);
+}
+function setAuto(v, say = true) {
+  auto = v; $('auto').classList.toggle('on', auto);
+  $('auto').textContent = auto ? '⏸ 自動翻頁中' : '▶ 自動翻頁';
+  try { localStorage.setItem('atayalAuto', auto ? '1' : '0'); } catch (e) {}
+  if (say) toast(auto ? '自動翻頁：開（讀完會自己翻頁）' : '自動翻頁：關');
+  if (auto && started && speech.ended) autoAdvance(600);
+  if (!auto) clearTimeout(autoTimer);
+}
+// 預先載入下一頁的圖片和聲音，翻頁不卡
+function preload(n) {
+  if (n > LAST) return;
+  const im = new Image(); im.src = `graphics/${n}.jpg`;
+  const a = new Audio(); a.preload = 'auto'; a.src = `speech/speech${n}.mp3`;
+  const m = new Audio(); m.preload = 'auto'; m.src = `music/music${n}.mp3`;
+  preloaded = [im, a, m];
+}
+function toggleFull() {
+  const d = document;
+  if (d.fullscreenElement || d.webkitFullscreenElement) (d.exitFullscreen || d.webkitExitFullscreen).call(d);
+  else { const el = d.documentElement; (el.requestFullscreen || el.webkitRequestFullscreen || (() => toast('這個瀏覽器不支援全螢幕'))).call(el); }
+}
+async function keepAwake() { try { if (navigator.wakeLock) await navigator.wakeLock.request('screen'); } catch (e) {} }
+function onStart() { keepAwake(); }
+
+$('auto').onclick = () => setAuto(!auto);
+$('full').onclick = toggleFull;
+$('go').addEventListener('click', onStart);
+addEventListener('keydown', e => {
+  if (!started) return;
+  const k = e.key.toLowerCase();
+  if (k === 'a') setAuto(!auto);
+  if (k === 'f') toggleFull();
+  if (k === 'm') $('mute').click();
+  if (k === 'home') show(0, 'l');
+});
+// 切到別的分頁或螢幕關閉時暫停，回來再繼續音樂
+document.addEventListener('visibilitychange', () => {
+  if (document.hidden) { speech.pause(); bgm.pause(); clearTimeout(autoTimer); }
+  else if (started) { keepAwake(); if (bgmOn) bgm.play().catch(() => {}); }
+});
+
+// 記住上次讀到哪一頁，下次可以直接繼續
+let saved = 0;
+try { saved = +localStorage.getItem('atayalPage') || 0; } catch (e) {}
+if (saved > 0 && saved <= LAST) {
+  const b = document.createElement('button');
+  b.id = 'resume'; b.textContent = `↩ 繼續讀第 ${saved} 頁`;
+  b.onclick = () => { started = true; $('cover').style.display = 'none'; pop(); onStart(); show(saved, 'r'); };
+  $('go').after(b);
+}
+setAuto(auto, false);
+
+show(0);
+</script>
+</body>
+</html>
